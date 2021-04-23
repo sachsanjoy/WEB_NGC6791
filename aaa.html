@@ -1,0 +1,15 @@
+<script language="javascript">
+    function pasuser(form) { 
+    if (form.id.value=="SECRET_USER") { 
+    if (form.pass.value=="SECRET_PASSWORD") { location="https://ngc6791.netlify.app/ngc6791" } 
+    else { alert("Wrong Password") } 
+    } 
+    else { alert("Wrong Username") } 
+    } 
+    </script>
+
+<form name="login">
+Username: <input name="id" size="6" type="text">
+Password: <input name="pass" size="6" type="password">
+<input value="Login" onclick="pasuser(this.form)" type="button">
+</form>
