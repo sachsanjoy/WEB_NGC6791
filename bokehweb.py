@@ -25,10 +25,10 @@ from bokeh.models import HoverTool
 #Output file
 output_file("index.html")
 
-import read_mist_models
+import modules.read_mist_models as read_mist_models
 
 #MIST isochrones input
-isocmd = read_mist_models.ISOCMD('MIST_v1.2_vvcrit0.0_UBVRIplus/MIST_v1.2_feh_p0.25_afe_p0.0_vvcrit0.0_UBVRIplus.iso.cmd')
+isocmd = read_mist_models.ISOCMD('data/MIST_v1.2_vvcrit0.0_UBVRIplus/MIST_v1.2_feh_p0.25_afe_p0.0_vvcrit0.0_UBVRIplus.iso.cmd')
 
 print ('version: ', isocmd.version)
 print ('photometric system: ', isocmd.photo_sys)
@@ -49,15 +49,15 @@ BB = isocmd.isocmds[age_ind]['Bessell_B']
 BV = isocmd.isocmds[age_ind]['Bessell_V']
 
 # loading data
-dfov = pd.read_csv('6791_GEDR3_GMM_ACM_CM_PM.csv')
-dv = pd.read_csv('NGC6791.csv')
+dfov = pd.read_csv('data/6791_GEDR3_GMM_ACM_CM_PM.csv')
+dv = pd.read_csv('data/NGC6791.csv')
 dfov.ra = dfov.ra.astype(float)
 dfov.dec = dfov.dec.astype(float)
 dfov.bp_rp = dfov.bp_rp.astype(float)
 dfov.phot_g_mean_mag = dfov.phot_g_mean_mag.astype(float)
 
-dv.RA = dv.RA.astype(float)
-dv.DEC = dv.DEC.astype(float)
+dv.ra = dv.ra.astype(float)
+dv.dec = dv.dec.astype(float)
 dv.BP_RP = dv.BP_RP.astype(float)
 dv.GMAG = dv.GMAG.astype(float)
 #choosing acm members with p>0.5
@@ -102,8 +102,8 @@ TOOLS = "pan,wheel_zoom,box_zoom,reset,tap"
 s1 = figure(plot_width=500, plot_height=500,background_fill_color="#000000",tools=TOOLS)
 #ngcfov = s1.circle('ra','dec', source=source1, size=2, color="#6063FF", alpha=0.8,name='ngcfov',legend_label='*FOV')
 ngc_memb = s1.circle('ra','dec', source=source2, size=2, color="#6063FF", alpha=0.8,name='ngc',legend_label='*6791')
-ngc_vstar = s1.circle('RA','DEC', source=source3, size=2, color="#FF002A", alpha=0.8,legend_label='V*6791')
-ngc_vfield = s1.circle('RA','DEC', source=source4, size=2, color="#00eb00", alpha=0.8,legend_label='V*FIELD')
+ngc_vstar = s1.circle('ra','dec', source=source3, size=2, color="#FF002A", alpha=0.8,legend_label='V*6791')
+ngc_vfield = s1.circle('ra','dec', source=source4, size=2, color="#00eb00", alpha=0.8,legend_label='V*FIELD')
 
 #ngcfov.visible = False
 ngc_memb.visible = True
