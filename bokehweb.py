@@ -23,7 +23,7 @@ import pandas as pd
 from bokeh.models import HoverTool
 
 #Output file
-output_file("index.html")
+output_file("ngc6791web/index.html")
 
 import modules.read_mist_models as read_mist_models
 
