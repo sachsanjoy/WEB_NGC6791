@@ -3,7 +3,10 @@ import matplotlib.pyplot as plt
 from bokeh.io import output_file, show
 from bokeh.models.annotations import Title
 from bokeh.layouts import gridplot
+from bokeh.layouts import gridplot
+from bokeh.layouts import layout
 from bokeh.layouts import column
+from bokeh.models import HTMLTemplateFormatter
 from bokeh.layouts import row
 from bokeh.models import ColumnDataSource, OpenURL, TapTool
 from bokeh.models import ColumnDataSource
@@ -23,7 +26,7 @@ import pandas as pd
 from bokeh.models import HoverTool
 
 #Output file
-output_file("ngc6791web/index.html")
+output_file("index.html")
 
 import modules.read_mist_models as read_mist_models
 
@@ -99,7 +102,7 @@ source4 = ColumnDataSource(sample4)
 TOOLS = "pan,wheel_zoom,box_zoom,reset,tap"
 
 #MAP
-s1 = figure(plot_width=500, plot_height=500,background_fill_color="#000000",tools=TOOLS)
+s1 = figure(plot_width=700, plot_height=700,background_fill_color="#000000",tools=TOOLS)
 #ngcfov = s1.circle('ra','dec', source=source1, size=2, color="#6063FF", alpha=0.8,name='ngcfov',legend_label='*FOV')
 ngc_memb = s1.circle('ra','dec', source=source2, size=2, color="#6063FF", alpha=0.8,name='ngc',legend_label='*6791')
 ngc_vstar = s1.circle('ra','dec', source=source3, size=2, color="#FF002A", alpha=0.8,legend_label='V*6791')
@@ -128,10 +131,10 @@ t1.text = 'MAP - Rc = 3.28 arcmin (yellow), Rt = 23 arcmin (blue)'
 s1.title = t1
 
 #CMD
-s2 = figure(plot_width=500, plot_height=500,background_fill_color="#000000",tools=TOOLS)
+s2 = figure(plot_width=700, plot_height=700,background_fill_color="#000000",tools=TOOLS)
+ngc_memb = s2.circle('bp_rp','phot_g_mean_mag', source=source2, size=5, color="#6063FF", alpha=0.5,name='ngc',legend_label='*6791')
 ngc_vstar = s2.circle('BP_RP','GMAG', source=source3, size=4, color="#FF002A", alpha=1.0,legend_label='V*6791')
 ngc_vfield = s2.circle('BP_RP','GMAG', source=source4, size=4, color="#00eb00", alpha=1.0,legend_label='V*FIELD') 
-ngc_memb = s2.circle('bp_rp','phot_g_mean_mag', source=source2, size=5, color="#6063FF", alpha=0.5,name='ngc',legend_label='*6791')
 #ngcfov = s2.circle('bp_rp','phot_g_mean_mag', source=source1, size=5, color="#6063FF", alpha=0.5,name='ngcfov',legend_label='*FOV')
 
 #ngcfov.visible = False
@@ -157,7 +160,7 @@ taptool = s2.select(type=TapTool)
 taptool.callback = OpenURL(url=url)
 
 #ISOCHRONES
-s3 = figure(plot_width=500, plot_height=500, background_fill_color="#000000",tools=TOOLS)
+s3 = figure(plot_width=700, plot_height=700, background_fill_color="#000000",tools=TOOLS)
 #ngcfov = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source1, size=5, color="#6063FF", alpha=0.5,legend_label='*FOV')
 ngc_memb = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source2, size=5, color="#6063FF", alpha=0.5,legend_label='*6791')
 ngc_vstar = s3.circle('BP_RP_abs','GMAG_abs', source=source3, size=4, color="#FF002A", alpha=1.0,name='ngc',legend_label='V*6791')
@@ -208,7 +211,7 @@ s3.add_layout(Label(x=2.0,y=8.7,text='Dwarfs',text_font_size='10px',text_color='
 tooltips1 = [('ID','@ID')]
 s3.add_tools(HoverTool(names=['ngc','field'],tooltips=tooltips1))
 t3 = Title()
-t3.text = 'MIST-CMD Fe/H = +0.25, Age = '+str(age)+' Gyr, (m-M)G = '+str(np.round(mM-Av,decimals=3))+', Av = '+str(Av) 
+t3.text = 'ST-CMD Fe/H = +0.25, Age = '+str(age)+' Gyr, (m-M)G = '+str(np.round(mM-Av,decimals=3))+', Av = '+str(Av) 
 s3.title = t3
 s3.y_range.flipped = True
 
@@ -218,9 +221,18 @@ s3.y_range.flipped = True
 #data_table = DataTable(columns=Columns, source=sourceTableSummary, index_position = 0, width=500, height=500,fit_columns=False) 
 
 sourceTableSummary1 = ColumnDataSource(dv)
-Columns1 = [TableColumn(field=colIndex, title=colIndex) for colIndex in dvngc.columns] 
-data_table1 = DataTable(columns=Columns1, source=sourceTableSummary1, index_position = 0, width=500, height=500,fit_columns=False) 
+formatter =  HTMLTemplateFormatter()
+Columns1 = [TableColumn(field=colIndex, title=colIndex, formatter=formatter) for colIndex in dvngc.columns] 
+data_table1 = DataTable(columns=Columns1, source=sourceTableSummary1, index_position = 0, width=700, height=700,selectable=True,editable=True,fit_columns=False) 
 
-grid = gridplot([[s1, s2, s3],[data_table1]], sizing_mode='fixed')
+#grid = gridplot([[s1, s2, s3],[data_table1]], sizing_mode='stretch_both')
+l = layout([[s1,s2,s3],[data_table1]], sizing_mode='stretch_both')
+show(l)
 #grid = gridplot([[s1, s2, s3],[data_table]])#, plot_width=800, plot_height=800)
-show(grid)
+#show(grid)
+
+#import time
+#time.sleep(50)
+#encrypting html
+#import os
+#os.system('python3 encrypt.py index.html ardastella')
