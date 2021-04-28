@@ -132,9 +132,9 @@ s1.title = t1
 
 #CMD
 s2 = figure(plot_width=700, plot_height=700,background_fill_color="#000000",tools=TOOLS)
-ngc_memb = s2.circle('bp_rp','phot_g_mean_mag', source=source2, size=5, color="#6063FF", alpha=0.5,name='ngc',legend_label='*6791')
-ngc_vstar = s2.circle('BP_RP','GMAG', source=source3, size=4, color="#FF002A", alpha=1.0,legend_label='V*6791')
-ngc_vfield = s2.circle('BP_RP','GMAG', source=source4, size=4, color="#00eb00", alpha=1.0,legend_label='V*FIELD') 
+ngc_memb = s2.circle('bp_rp','phot_g_mean_mag', source=source2, size=5, color="#6063FF", alpha=0.5,legend_label='*6791')
+ngc_vstar = s2.circle('BP_RP','GMAG', source=source3, size=4, color="#FF002A", alpha=1.0,name='ngc',legend_label='V*6791')
+ngc_vfield = s2.circle('BP_RP','GMAG', source=source4, size=4, color="#00eb00", alpha=1.0,name='field',legend_label='V*FIELD') 
 #ngcfov = s2.circle('bp_rp','phot_g_mean_mag', source=source1, size=5, color="#6063FF", alpha=0.5,name='ngcfov',legend_label='*FOV')
 
 #ngcfov.visible = False
@@ -153,8 +153,10 @@ t2 = Title()
 t2.text = 'CMD - Linked to Aladin lite'
 s2.title = t2
 s2.y_range.flipped = True
-tooltips1 = [('Index','@index'),('Gaia_ID','@designation')]
-s2.add_tools(HoverTool(names=['ngc'],tooltips=tooltips1))
+#tooltips_gaia = [('Index','@index'),('Gaia_ID','@designation')]
+tooltips1 = tooltips1 = [('ID','@ID'),('VAR','@TENTATIVE')]
+
+s2.add_tools(HoverTool(names=['ngc','field'],tooltips=tooltips1))
 url = "http://aladin.u-strasbg.fr/AladinLite/?target=@ra%20@dec"
 taptool = s2.select(type=TapTool)
 taptool.callback = OpenURL(url=url)
@@ -208,7 +210,7 @@ s3.add_layout(Label(x=1.2,y=8.0,text='MS+WD',text_font_size='10px',text_color='#
 s3.add_layout(Label(x=2.0,y=8.7,text='Dwarfs',text_font_size='10px',text_color='#c76300'))
 
 
-tooltips1 = [('ID','@ID')]
+tooltips1 = tooltips1 = [('ID','@ID'),('VAR','@TENTATIVE')]
 s3.add_tools(HoverTool(names=['ngc','field'],tooltips=tooltips1))
 t3 = Title()
 t3.text = 'ST-CMD Fe/H = +0.25, Age = '+str(age)+' Gyr, (m-M)G = '+str(np.round(mM-Av,decimals=3))+', Av = '+str(Av) 
