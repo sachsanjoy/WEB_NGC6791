@@ -59,6 +59,7 @@ dfov.ra = dfov.ra.astype(float)
 dfov.dec = dfov.dec.astype(float)
 dfov.bp_rp = dfov.bp_rp.astype(float)
 dfov.phot_g_mean_mag = dfov.phot_g_mean_mag.astype(float)
+
 dv.ra = dv.ra.astype(float)
 dv.dec = dv.dec.astype(float)
 dv.BP_RP = dv.BP_RP.astype(float)
@@ -86,7 +87,6 @@ dfov['phot_g_mean_mag_abs'] = dfov.phot_g_mean_mag-mM
 dngc['phot_g_mean_mag_abs'] = dngc.phot_g_mean_mag-mM
 dvngc['GMAG_abs'] = dvngc.GMAG-mM
 dvfield['GMAG_abs'] = dvfield.GMAG-mM
-
 #Bokeh plots
 sample1 = dfov.sample(np.shape(dfov)[0]) #FOV
 source1 = ColumnDataSource(sample1)
@@ -298,18 +298,12 @@ s3.y_range.flipped = True
 #data_table = DataTable(columns=Columns, source=sourceTableSummary, index_position = 0, width=500, height=500,fit_columns=False) 
 
 sourceTableSummary1 = ColumnDataSource(dv)
+
 formatter =  HTMLTemplateFormatter()
 Columns1 = [TableColumn(field=colIndex, title=colIndex, formatter=formatter) for colIndex in dvngc.columns] 
 data_table1 = DataTable(columns=Columns1, source=source3, index_position = 0, width=700, height=700,selectable=True,editable=True,fit_columns=False) 
 
-
-#sourceTableSummary1 = ColumnDataSource(dv)
-formatter =  HTMLTemplateFormatter()
-Columns1 = [TableColumn(field=colIndex, title=colIndex, formatter=formatter) for colIndex in dvngc.columns] 
-data_table2 = DataTable(columns=Columns1, source=source4, index_position = 0, width=700, height=700,selectable=True,editable=True,fit_columns=False) 
-
-l = layout([[s1,s2,s3],[data_table1,data_table2]], sizing_mode='stretch_both')
-
+l = layout([[s1,s2,s3],[data_table1]], sizing_mode='stretch_both')
 #l = layout([[s1,s2,s3]], sizing_mode='stretch_both')
 
 show(l)
