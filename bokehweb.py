@@ -165,25 +165,12 @@ taptool.callback = OpenURL(url=url)
 #ISOCHRONES
 s3 = figure(plot_width=700, plot_height=700, background_fill_color="#000000",tools=TOOLS)
 #ngcfov = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source1, size=5, color="#6063FF", alpha=0.5,legend_label='*FOV')
-ngc_memb = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source2, size=5, color="#6063FF", alpha=0.5,legend_label='*6791')
+ngc_memb = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source2, size=5, color="#6063FF",alpha=0.5,legend_label='*6791')
 ngc_vstar = s3.circle('BP_RP_abs','GMAG_abs', source=source3, size=4, color="#FF002A", alpha=1.0,name='ngc',legend_label='V*6791')
 ngc_vfield = s3.circle('BP_RP_abs','GMAG_abs', source=source4, size=4, color="#00eb00", alpha=1.0,name='field',legend_label='V*FIELD') 
+iso = s3.line(BP-RP,G,color='snow')
 
-#ngcfov.visible = False
-ngc_memb.visible = True
-ngc_vstar.visible = True
-ngc_vfield.visible = False
-s3.legend.location = "top_left"
-s3.legend.click_policy="hide"
-s3.legend.background_fill_alpha=0
-s3.legend.border_line_alpha=0
-s3.legend.label_text_color = "white"
-
-s3.line(BP-RP,G,color='snow')
-s3.xaxis.axis_label = 'BP-RP'
-s3.yaxis.axis_label = 'MG'
 #text labels
-
 s3.add_layout(Label(x=-0.4,y=4.6,text='EHB',text_font_size='10px',text_color='#2e7bff'))
 s3.add_layout(Label(x=0,y=12.0,text='WD',text_font_size='10px',text_color='#b3dfff'))
 s3.add_layout(Label(x=0.5,y=1.8,text='BHB',text_font_size='10px',text_color='#2e7bff'))
@@ -197,19 +184,28 @@ s3.add_layout(Label(x=1.8,y=-0.2,text='AGB-Bump',text_font_size='10px',text_colo
 s3.add_layout(Label(x=1.3,y=0.7,text='RC',text_font_size='10px',text_color='#ff7733'))
 s3.add_layout(Label(x=1.4,y=1.4,text='RGB-Bump',text_font_size='10px',text_color='#ffb833'))
 s3.add_layout(Label(x=1.35,y=1.0,text='SRC',text_font_size='10px',text_color='#ffb800'))
-
 s3.add_layout(Label(x=1.3,y=2.4,text='RGB',text_font_size='10px',text_color='#ff9233'))
 s3.add_layout(Label(x=1.1,y=3.7,text='SGB',text_font_size='10px',text_color='#ffcc33'))
 s3.add_layout(Label(x=0.92,y=3.65,text='MSTO',text_font_size='10px',text_color='#ffe524'))
 s3.add_layout(Label(x=0.88,y=4.2,text='MS',text_font_size='10px',text_color='#ffb833'))
 s3.add_layout(Label(x=0.78,y=3.25,text='MS',text_font_size='10px',text_color='#339cff'))
 s3.add_layout(Label(x=1.02,y=5.4,text='MS',text_font_size='10px',text_color='#339cff'))
-
 s3.add_layout(Label(x=1.38,y=6.8,text='sub-Dwarfs',text_font_size='10px',text_color='#ffcb0f'))
-
 s3.add_layout(Label(x=1.2,y=8.0,text='MS+WD',text_font_size='10px',text_color='#ffcb0f'))
 s3.add_layout(Label(x=2.0,y=8.7,text='Dwarfs',text_font_size='10px',text_color='#c76300'))
 
+#ngcfov.visible = False
+ngc_memb.visible = True
+ngc_vstar.visible = True
+ngc_vfield.visible = False
+iso.visible = True
+s3.legend.location = "top_left"
+s3.legend.click_policy="hide"
+s3.legend.background_fill_alpha=0
+s3.legend.border_line_alpha=0
+s3.legend.label_text_color = "white"
+s3.xaxis.axis_label = 'BP-RP'
+s3.yaxis.axis_label = 'MG'
 
 tooltips1 = tooltips1 = [('ID','@ID'),('VAR','@TENTATIVE')]
 s3.add_tools(HoverTool(names=['ngc','field'],tooltips=tooltips1))
@@ -228,13 +224,10 @@ dvngc_rot = dv[dv.TENTATIVE=='Rotational']
 dvngc_nova = dv[dv.TENTATIVE=='Nova']
 dvngc_mod = dv[dv.TENTATIVE=='Modulated']
 dvngc_ep = dv[dv.TENTATIVE=='Eclipsing+Period']
-
 dvngc_clc = dv[dv.TENTATIVE=='Classical']
-
 dvngc_2p = dv[dv.TENTATIVE=='2period']
 
 dvngc_2p = dv[dv.TENTATIVE=='2period']
-
 s4 = figure(plot_width=700, plot_height=700, background_fill_color="#000000",tools=TOOLS)
 #ngcfov = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source1, size=5, color="#6063FF", alpha=0.5,legend_label='*FOV')
 ngc_memb = s4.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source2, size=5, color="#6063FF", alpha=0.5,legend_label='*6791')
