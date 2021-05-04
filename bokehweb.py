@@ -32,8 +32,8 @@ output_file("index.html")
 import modules.read_mist_models as read_mist_models
 
 #MIST isochrones input
-#isocmd = read_mist_models.ISOCMD('data/MIST_v1.2_vvcrit0.0_UBVRIplus/MIST_v1.2_feh_p0.25_afe_p0.0_vvcrit0.0_UBVRIplus.iso.cmd')
-isocmd = read_mist_models.ISOCMD('data/MIST_iso_608c4e008cc4e.iso.cmd')
+isocmd = read_mist_models.ISOCMD('data/MIST_v1.2_vvcrit0.0_UBVRIplus/MIST_v1.2_feh_p0.25_afe_p0.0_vvcrit0.0_UBVRIplus.iso.cmd')
+#isocmd = read_mist_models.ISOCMD('data/MIST_iso_608c4e008cc4e.iso.cmd')
 
 print ('version: ', isocmd.version)
 print ('photometric system: ', isocmd.photo_sys)
@@ -45,7 +45,7 @@ print ('available columns: ', isocmd.hdr_list)
 print ('Av extinction: ', isocmd.Av_extinction)
 
 # Input age returns the index for the desired age
-age = 7
+age = 9.95
 age_ind = isocmd.age_index(age) 
 G = isocmd.isocmds[age_ind]['Gaia_G_DR2Rev']
 BP = isocmd.isocmds[age_ind]['Gaia_BP_DR2Rev']
