@@ -138,8 +138,10 @@ ngc_memb = s2.circle('bp_rp','phot_g_mean_mag', source=source2, size=5, color="#
 ngc_vstar = s2.circle('BP_RP','GMAG', source=source3, size=4, color="#FF002A", alpha=1.0,name='ngc',legend_label='V*6791')
 ngc_vfield = s2.circle('BP_RP','GMAG', source=source4, size=4, color="#00eb00", alpha=1.0,name='field',legend_label='V*FIELD') 
 #ngcfov = s2.circle('bp_rp','phot_g_mean_mag', source=source1, size=5, color="#6063FF", alpha=0.5,name='ngcfov',legend_label='*FOV')
+iso = s2.line(BP-RP+ex,G+mM,color='snow',legend_label='ISO')
 
 #ngcfov.visible = False
+iso.visible = True
 ngc_memb.visible = True
 ngc_vstar.visible = True
 ngc_vfield.visible = False
@@ -169,7 +171,7 @@ s3 = figure(plot_width=700, plot_height=700, background_fill_color="#000000",too
 ngc_memb = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source2, size=5, color="#6063FF",alpha=0.5,legend_label='*6791')
 ngc_vstar = s3.circle('BP_RP_abs','GMAG_abs', source=source3, size=4, color="#FF002A", alpha=1.0,name='ngc',legend_label='V*6791')
 ngc_vfield = s3.circle('BP_RP_abs','GMAG_abs', source=source4, size=4, color="#00eb00", alpha=1.0,name='field',legend_label='V*FIELD') 
-iso = s3.line(BP-RP,G,color='snow')
+iso = s3.line(BP-RP,G,color='snow',legend_label='ISO')
 
 #text labels
 s3.add_layout(Label(x=-0.4,y=4.6,text='EHB',text_font_size='10px',text_color='#2e7bff'))
