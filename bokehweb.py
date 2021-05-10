@@ -32,8 +32,8 @@ output_file("index.html")
 import modules.read_mist_models as read_mist_models
 
 #MIST isochrones input
-isocmd = read_mist_models.ISOCMD('data/MIST_v1.2_vvcrit0.0_UBVRIplus/MIST_v1.2_feh_p0.25_afe_p0.0_vvcrit0.0_UBVRIplus.iso.cmd')
-#isocmd = read_mist_models.ISOCMD('data/MIST_iso_608c4e008cc4e.iso.cmd')
+#isocmd = read_mist_models.ISOCMD('data/MIST_v1.2_vvcrit0.0_UBVRIplus/MIST_v1.2_feh_p0.25_afe_p0.0_vvcrit0.0_UBVRIplus.iso.cmd')
+isocmd = read_mist_models.ISOCMD('data/MIST_iso_60996c624526b.iso.cmd')
 
 print ('version: ', isocmd.version)
 print ('photometric system: ', isocmd.photo_sys)
@@ -45,13 +45,29 @@ print ('available columns: ', isocmd.hdr_list)
 print ('Av extinction: ', isocmd.Av_extinction)
 
 # Input age returns the index for the desired age
-age = 9.85
+age = 9.85 #age = 7Gyr
 age_ind = isocmd.age_index(age) 
-G = isocmd.isocmds[age_ind]['Gaia_G_DR2Rev']
-BP = isocmd.isocmds[age_ind]['Gaia_BP_DR2Rev']
-RP = isocmd.isocmds[age_ind]['Gaia_RP_DR2Rev']
-BB = isocmd.isocmds[age_ind]['Bessell_B']
-BV = isocmd.isocmds[age_ind]['Bessell_V']
+G7 = isocmd.isocmds[age_ind]['Gaia_G_DR2Rev']
+BP7 = isocmd.isocmds[age_ind]['Gaia_BP_DR2Rev']
+RP7 = isocmd.isocmds[age_ind]['Gaia_RP_DR2Rev']
+
+age = 9.905 #age = 8Gyr
+age_ind = isocmd.age_index(age) 
+G8 = isocmd.isocmds[age_ind]['Gaia_G_DR2Rev']
+BP8 = isocmd.isocmds[age_ind]['Gaia_BP_DR2Rev']
+RP8 = isocmd.isocmds[age_ind]['Gaia_RP_DR2Rev']
+
+age = 9.95 #age = 8.9Gyr
+age_ind = isocmd.age_index(age) 
+G9 = isocmd.isocmds[age_ind]['Gaia_G_DR2Rev']
+BP9 = isocmd.isocmds[age_ind]['Gaia_BP_DR2Rev']
+RP9 = isocmd.isocmds[age_ind]['Gaia_RP_DR2Rev']
+
+age = 9.998 #age = 9.95Gyr
+age_ind = isocmd.age_index(age) 
+G10 = isocmd.isocmds[age_ind]['Gaia_G_DR2Rev']
+BP10 = isocmd.isocmds[age_ind]['Gaia_BP_DR2Rev']
+RP10 = isocmd.isocmds[age_ind]['Gaia_RP_DR2Rev']
 
 # loading data
 dfov = pd.read_csv('data/6791_GEDR3_GMM_ACM_CM_PM.csv')
@@ -73,11 +89,11 @@ print('Almost certain variable members : ', len(dv[dv.ACM>=pt]))
 dngc = dfov[dfov.ACM>=pt]
 dvngc = dv[dv.ACM>=pt]
 dvfield = dv[dv.ACM<pt]
-Av = 0.45 # extintion
+Av = 0 #0.45 # extintion the model includes Av
 #mM = 13.45 # 13.35 Antony Twarog 2006
 #distance modulus from parallax of 4200 and extintion
-mM = 5*np.log10(4200)-5+Av
-ex = 0.22 # 0.09
+mM = 5*np.log10(4065)-5+Av
+ex = 0.0 # 0.09
 dfov['bp_rp_abs'] = dfov.bp_rp-ex
 dngc['bp_rp_abs'] = dngc.bp_rp-ex
 dvngc['BP_RP_abs'] = dvngc.BP_RP-ex
@@ -140,7 +156,9 @@ ngc_memb = s2.circle('bp_rp','phot_g_mean_mag', source=source2, size=5, color="#
 ngc_vstar = s2.circle('BP_RP','GMAG', source=source3, size=4, color="#FFFF00", alpha=1.0,name='ngc',legend_label='V*6791')
 ngc_vfield = s2.circle('BP_RP','GMAG', source=source4, size=4, color="#00eb00", alpha=1.0,name='field',legend_label='V*FIELD') 
 #ngcfov = s2.circle('bp_rp','phot_g_mean_mag', source=source1, size=5, color="#6063FF", alpha=0.5,name='ngcfov',legend_label='*FOV')
-iso = s2.line(BP-RP+ex,G+mM,color='snow',legend_label='ISO')
+
+age_gyr = 10**(9.95-9)
+iso = s2.line(BP9-RP9+ex,G9+mM,color='snow',legend_label='ISO '+str(np.round(age_gyr,2)))
 
 #ngcfov.visible = False
 iso.visible = True
@@ -175,7 +193,10 @@ s3 = figure(plot_width=700, plot_height=700, background_fill_color="#000000",too
 ngc_memb = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source2, size=5, color="#6063FF",alpha=0.5,legend_label='*6791')
 ngc_vstar = s3.circle('BP_RP_abs','GMAG_abs', source=source3, size=4, color="#FFFF00", alpha=1.0,name='ngc',legend_label='V*6791')
 ngc_vfield = s3.circle('BP_RP_abs','GMAG_abs', source=source4, size=4, color="#00eb00", alpha=1.0,name='field',legend_label='V*FIELD') 
-iso = s3.line(BP-RP,G,color='snow',legend_label='ISO')
+iso7 = s3.line(BP7-RP7,G7,color='snow',legend_label='ISO '+str(np.round(10**(9.85-9),2)))
+iso8 = s3.line(BP8-RP8,G8,color='snow',legend_label='ISO '+str(np.round(10**(9.905-9),2)))
+iso9 = s3.line(BP9-RP9,G9,color='snow',legend_label='ISO '+str(np.round(10**(9.95-9),2)))
+iso10 = s3.line(BP10-RP10,G10,color='snow',legend_label='ISO '+str(np.round(10**(9.998-9),2)))
 
 #text labels
 s3.add_layout(Label(x=-0.4,y=4.6,text='EHB',text_font_size='10px',text_color='#2e7bff'))
@@ -205,7 +226,11 @@ s3.add_layout(Label(x=2.0,y=8.7,text='Dwarfs',text_font_size='10px',text_color='
 ngc_memb.visible = True
 ngc_vstar.visible = True
 ngc_vfield.visible = False
-iso.visible = True
+iso7.visible = False
+iso8.visible = False
+iso9.visible = True
+iso10.visible = False
+
 s3.legend.location = "top_left"
 s3.legend.click_policy="hide"
 s3.legend.background_fill_alpha=0
@@ -217,8 +242,9 @@ s3.yaxis.axis_label = 'MG'
 tooltips1 = tooltips1 = [('ID','@ID'),('VAR','@TENTATIVE')]
 s3.add_tools(HoverTool(names=['ngc','field'],tooltips=tooltips1))
 t3 = Title()
+age = 9.95
 age_gyr = 10**(age-9)
-t3.text = 'ST-CMD Fe/H = +0.25, Age = '+str(np.round(age_gyr,3))+' Gyr, (m-M)G = '+str(np.round(mM-Av,decimals=3))+', Av = '+str(Av) 
+t3.text = 'ST-CMD Fe/H = +0.30, Age = '+str(np.round(age_gyr,3))+' Gyr, (m-M)0 = '+str(np.round(mM-Av,decimals=3))+', Av = '+str(0.45) 
 s3.title = t3
 s3.y_range.flipped = True
 s3.xgrid.grid_line_alpha = 0.2
