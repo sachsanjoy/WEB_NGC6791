@@ -73,11 +73,11 @@ print('Almost certain variable members : ', len(dv[dv.ACM>=pt]))
 dngc = dfov[dfov.ACM>=pt]
 dvngc = dv[dv.ACM>=pt]
 dvfield = dv[dv.ACM<pt]
-Av = 0.33 # extintion
+Av = 0 #0.33 # extintion
 #mM = 13.45 # 13.35 Antony Twarog 2006
 #distance modulus from parallax of 4200 and extintion
 mM = 5*np.log10(4200)-5+Av
-ex = 0.19 # 0.09
+ex = 0 #0.19 # 0.09
 dfov['bp_rp_abs'] = dfov.bp_rp-ex
 dngc['bp_rp_abs'] = dngc.bp_rp-ex
 dvngc['BP_RP_abs'] = dvngc.BP_RP-ex
