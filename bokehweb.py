@@ -45,7 +45,7 @@ print ('available columns: ', isocmd.hdr_list)
 print ('Av extinction: ', isocmd.Av_extinction)
 
 # Input age returns the index for the desired age
-age = 9.95
+age = 9.85
 age_ind = isocmd.age_index(age) 
 G = isocmd.isocmds[age_ind]['Gaia_G_DR2Rev']
 BP = isocmd.isocmds[age_ind]['Gaia_BP_DR2Rev']
@@ -73,11 +73,11 @@ print('Almost certain variable members : ', len(dv[dv.ACM>=pt]))
 dngc = dfov[dfov.ACM>=pt]
 dvngc = dv[dv.ACM>=pt]
 dvfield = dv[dv.ACM<pt]
-Av = 0 #0.33 # extintion
+Av = 0.45 # extintion
 #mM = 13.45 # 13.35 Antony Twarog 2006
 #distance modulus from parallax of 4200 and extintion
 mM = 5*np.log10(4200)-5+Av
-ex = 0 #0.19 # 0.09
+ex = 0.22 # 0.09
 dfov['bp_rp_abs'] = dfov.bp_rp-ex
 dngc['bp_rp_abs'] = dngc.bp_rp-ex
 dvngc['BP_RP_abs'] = dvngc.BP_RP-ex
@@ -107,7 +107,7 @@ TOOLS = "pan,wheel_zoom,box_zoom,reset,tap"
 s1 = figure(plot_width=700, plot_height=700,background_fill_color="#000000",tools=TOOLS)
 #ngcfov = s1.circle('ra','dec', source=source1, size=2, color="#6063FF", alpha=0.8,name='ngcfov',legend_label='*FOV')
 ngc_memb = s1.circle('ra','dec', source=source2, size=2, color="#6063FF", alpha=0.8,name='ngc',legend_label='*6791')
-ngc_vstar = s1.circle('ra','dec', source=source3, size=2, color="#FF002A", alpha=0.8,legend_label='V*6791')
+ngc_vstar = s1.circle('ra','dec', source=source3, size=2, color="#FFFF00", alpha=0.8,legend_label='V*6791')
 ngc_vfield = s1.circle('ra','dec', source=source4, size=2, color="#00eb00", alpha=0.8,legend_label='V*FIELD')
 
 #ngcfov.visible = False
@@ -131,11 +131,13 @@ s1.yaxis.axis_label = 'dec'
 t1 = Title()
 t1.text = 'MAP - Rc = 3.28 arcmin (yellow), Rt = 23 arcmin (blue)'
 s1.title = t1
+s1.xgrid.grid_line_alpha = 0.2
+s1.ygrid.grid_line_alpha = 0.2
 
 #CMD
 s2 = figure(plot_width=700, plot_height=700,background_fill_color="#000000",tools=TOOLS)
 ngc_memb = s2.circle('bp_rp','phot_g_mean_mag', source=source2, size=5, color="#6063FF", alpha=0.5,legend_label='*6791')
-ngc_vstar = s2.circle('BP_RP','GMAG', source=source3, size=4, color="#FF002A", alpha=1.0,name='ngc',legend_label='V*6791')
+ngc_vstar = s2.circle('BP_RP','GMAG', source=source3, size=4, color="#FFFF00", alpha=1.0,name='ngc',legend_label='V*6791')
 ngc_vfield = s2.circle('BP_RP','GMAG', source=source4, size=4, color="#00eb00", alpha=1.0,name='field',legend_label='V*FIELD') 
 #ngcfov = s2.circle('bp_rp','phot_g_mean_mag', source=source1, size=5, color="#6063FF", alpha=0.5,name='ngcfov',legend_label='*FOV')
 iso = s2.line(BP-RP+ex,G+mM,color='snow',legend_label='ISO')
@@ -145,6 +147,7 @@ iso.visible = True
 ngc_memb.visible = True
 ngc_vstar.visible = True
 ngc_vfield.visible = False
+iso.visible = False
 s2.legend.location = "top_left"
 s2.legend.click_policy="hide"
 s2.legend.background_fill_alpha=0
@@ -164,12 +167,13 @@ s2.add_tools(HoverTool(names=['ngc','field'],tooltips=tooltips1))
 url = "http://aladin.u-strasbg.fr/AladinLite/?target=@ra%20@dec"
 taptool = s2.select(type=TapTool)
 taptool.callback = OpenURL(url=url)
-
+s2.xgrid.grid_line_alpha = 0.2
+s2.ygrid.grid_line_alpha = 0.2
 #ISOCHRONES
 s3 = figure(plot_width=700, plot_height=700, background_fill_color="#000000",tools=TOOLS)
 #ngcfov = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source1, size=5, color="#6063FF", alpha=0.5,legend_label='*FOV')
 ngc_memb = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source2, size=5, color="#6063FF",alpha=0.5,legend_label='*6791')
-ngc_vstar = s3.circle('BP_RP_abs','GMAG_abs', source=source3, size=4, color="#FF002A", alpha=1.0,name='ngc',legend_label='V*6791')
+ngc_vstar = s3.circle('BP_RP_abs','GMAG_abs', source=source3, size=4, color="#FFFF00", alpha=1.0,name='ngc',legend_label='V*6791')
 ngc_vfield = s3.circle('BP_RP_abs','GMAG_abs', source=source4, size=4, color="#00eb00", alpha=1.0,name='field',legend_label='V*FIELD') 
 iso = s3.line(BP-RP,G,color='snow',legend_label='ISO')
 
@@ -213,10 +217,12 @@ s3.yaxis.axis_label = 'MG'
 tooltips1 = tooltips1 = [('ID','@ID'),('VAR','@TENTATIVE')]
 s3.add_tools(HoverTool(names=['ngc','field'],tooltips=tooltips1))
 t3 = Title()
-t3.text = 'ST-CMD Fe/H = +0.25, Age = '+str(age)+' Gyr, (m-M)G = '+str(np.round(mM-Av,decimals=3))+', Av = '+str(Av) 
+age_gyr = 10**(age-9)
+t3.text = 'ST-CMD Fe/H = +0.25, Age = '+str(np.round(age_gyr,3))+' Gyr, (m-M)G = '+str(np.round(mM-Av,decimals=3))+', Av = '+str(Av) 
 s3.title = t3
 s3.y_range.flipped = True
-
+s3.xgrid.grid_line_alpha = 0.2
+s3.ygrid.grid_line_alpha = 0.2
 '''
 #VAR_TYPE PANEL
 dvngc_ecb = dv[dv.TENTATIVE=='Eclipsing']
@@ -234,7 +240,7 @@ dvngc_2p = dv[dv.TENTATIVE=='2period']
 s4 = figure(plot_width=700, plot_height=700, background_fill_color="#000000",tools=TOOLS)
 #ngcfov = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source1, size=5, color="#6063FF", alpha=0.5,legend_label='*FOV')
 ngc_memb = s4.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source2, size=5, color="#6063FF", alpha=0.5,legend_label='*6791')
-ngc_vstar = s4.circle('BP_RP_abs','GMAG_abs', source=source3, size=4, color="#FF002A", alpha=1.0,name='ngc',legend_label='V*6791')
+ngc_vstar = s4.circle('BP_RP_abs','GMAG_abs', source=source3, size=4, color="#FFFF00", alpha=1.0,name='ngc',legend_label='V*6791')
 ngc_vfield = s4.circle('BP_RP_abs','GMAG_abs', source=source4, size=4, color="#00eb00", alpha=1.0,name='field',legend_label='V*FIELD') 
 #var_type plot
 ngc_ecb =  
