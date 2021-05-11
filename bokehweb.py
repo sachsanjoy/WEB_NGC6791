@@ -70,7 +70,7 @@ BP10 = isocmd.isocmds[age_ind]['Gaia_BP_DR2Rev']
 RP10 = isocmd.isocmds[age_ind]['Gaia_RP_DR2Rev']
 
 # loading data
-dfov = pd.read_csv('data/6791_GEDR3_GMM_ACM_CM_PM.csv')
+dfov = pd.read_csv('data/6791_GEDR3_GMM_5D.csv')
 dv = pd.read_csv('data/NGC6791.csv')
 dfov.ra = dfov.ra.astype(float)
 dfov.dec = dfov.dec.astype(float)
@@ -81,14 +81,12 @@ dv.dec = dv.dec.astype(float)
 dv.BP_RP = dv.BP_RP.astype(float)
 dv.GMAG = dv.GMAG.astype(float)
 #choosing acm members with p>0.5
-pt = 0.5 
-print('Almost certain members : ', len(dfov[dfov.ACM>=pt]))
-print('Certain members : ', len(dfov[dfov.CM>=pt]))
-print('Probable members : ', len(dfov[dfov.PM>=pt]))
-print('Almost certain variable members : ', len(dv[dv.ACM>=pt]))
-dngc = dfov[dfov.ACM>=pt]
-dvngc = dv[dv.ACM>=pt]
-dvfield = dv[dv.ACM<pt]
+pt = 0.5
+print('Almost certain members : ', len(dfov[dfov.gmm_prob>=pt]))
+print('Almost certain variable members : ', len(dv[dv['P5D-PM-POS-PLX']>=pt]))
+dngc = dfov[dfov.gmm_prob>=pt]
+dvngc = dv[dv['P5D-PM-POS-PLX']>=pt]
+dvfield = dv[dv['P5D-PM-POS-PLX']<pt]
 Av = 0 #0.45 # extintion the model includes Av
 #mM = 13.45 # 13.35 Antony Twarog 2006
 #distance modulus from parallax of 4200 and extintion
@@ -118,7 +116,8 @@ sample4 = dvfield.sample(np.shape(dvfield)[0]) #variable almost certain members
 source4 = ColumnDataSource(sample4)
 
 TOOLS = "pan,wheel_zoom,box_zoom,reset,tap"
-cpal = ['#000000','#6B6969','#0080ff','#80ff00']
+#cpal = ['#000000','#6B6969','#0080ff','#80ff00'] #arda
+cpal = ['#000000','#6B6969','#00ffff','#aaff00'] #bluegrass
 #MAP
 s1 = figure(plot_width=700, plot_height=700,background_fill_color=cpal[0],tools=TOOLS)
 #ngcfov = s1.circle('ra','dec', source=source1, size=2, color=cpal[1], alpha=0.8,name='ngcfov',legend_label='*FOV')
@@ -179,7 +178,7 @@ t2.text = 'CMD - Linked to Aladin lite'
 s2.title = t2
 s2.y_range.flipped = True
 #tooltips_gaia = [('Index','@index'),('Gaia_ID','@designation')]
-tooltips1 = tooltips1 = [('ID','@ID'),('VAR','@TENTATIVE')]
+tooltips1 = tooltips1 = [('ID','@ID'),('VAR','@FINAL_TYPE')]
 
 s2.add_tools(HoverTool(names=['ngc','field'],tooltips=tooltips1))
 url = "http://aladin.u-strasbg.fr/AladinLite/?target=@ra%20@dec"
