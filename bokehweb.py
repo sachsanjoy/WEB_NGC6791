@@ -118,13 +118,13 @@ sample4 = dvfield.sample(np.shape(dvfield)[0]) #variable almost certain members
 source4 = ColumnDataSource(sample4)
 
 TOOLS = "pan,wheel_zoom,box_zoom,reset,tap"
-
+cpal = ['#000000','#6B6969','#0080ff','#80ff00']
 #MAP
-s1 = figure(plot_width=700, plot_height=700,background_fill_color="#000000",tools=TOOLS)
-#ngcfov = s1.circle('ra','dec', source=source1, size=2, color="#6063FF", alpha=0.8,name='ngcfov',legend_label='*FOV')
-ngc_memb = s1.circle('ra','dec', source=source2, size=2, color="#6063FF", alpha=0.8,name='ngc',legend_label='*6791')
-ngc_vstar = s1.circle('ra','dec', source=source3, size=2, color="#FFFF00", alpha=0.8,legend_label='V*6791')
-ngc_vfield = s1.circle('ra','dec', source=source4, size=2, color="#00eb00", alpha=0.8,legend_label='V*FIELD')
+s1 = figure(plot_width=700, plot_height=700,background_fill_color=cpal[0],tools=TOOLS)
+#ngcfov = s1.circle('ra','dec', source=source1, size=2, color=cpal[1], alpha=0.8,name='ngcfov',legend_label='*FOV')
+ngc_memb = s1.circle('ra','dec', source=source2, size=2, color=cpal[1], alpha=0.8,name='ngc',legend_label='*6791')
+ngc_vstar = s1.circle('ra','dec', source=source3, size=2, color=cpal[2], alpha=0.8,legend_label='V*6791')
+ngc_vfield = s1.circle('ra','dec', source=source4, size=2, color=cpal[3], alpha=0.8,legend_label='V*FIELD')
 
 #ngcfov.visible = False
 ngc_memb.visible = True
@@ -151,11 +151,11 @@ s1.xgrid.grid_line_alpha = 0.2
 s1.ygrid.grid_line_alpha = 0.2
 
 #CMD
-s2 = figure(plot_width=700, plot_height=700,background_fill_color="#000000",tools=TOOLS)
-ngc_memb = s2.circle('bp_rp','phot_g_mean_mag', source=source2, size=5, color="#6063FF", alpha=0.5,legend_label='*6791')
-ngc_vstar = s2.circle('BP_RP','GMAG', source=source3, size=4, color="#FFFF00", alpha=1.0,name='ngc',legend_label='V*6791')
-ngc_vfield = s2.circle('BP_RP','GMAG', source=source4, size=4, color="#00eb00", alpha=1.0,name='field',legend_label='V*FIELD') 
-#ngcfov = s2.circle('bp_rp','phot_g_mean_mag', source=source1, size=5, color="#6063FF", alpha=0.5,name='ngcfov',legend_label='*FOV')
+s2 = figure(plot_width=700, plot_height=700,background_fill_color=cpal[0],tools=TOOLS)
+ngc_memb = s2.circle('bp_rp','phot_g_mean_mag', source=source2, size=5, color=cpal[1], alpha=0.5,legend_label='*6791')
+ngc_vstar = s2.circle('BP_RP','GMAG', source=source3, size=4, color=cpal[2], alpha=1.0,name='ngc',legend_label='V*6791')
+ngc_vfield = s2.circle('BP_RP','GMAG', source=source4, size=4, color=cpal[3], alpha=1.0,name='field',legend_label='V*FIELD') 
+#ngcfov = s2.circle('bp_rp','phot_g_mean_mag', source=source1, size=5, color=cpal[1], alpha=0.5,name='ngcfov',legend_label='*FOV')
 
 age_gyr = 10**(9.95-9)
 iso = s2.line(BP9-RP9+ex,G9+mM,color='snow',legend_label='ISO '+str(np.round(age_gyr,2)))
@@ -188,11 +188,11 @@ taptool.callback = OpenURL(url=url)
 s2.xgrid.grid_line_alpha = 0.2
 s2.ygrid.grid_line_alpha = 0.2
 #ISOCHRONES
-s3 = figure(plot_width=700, plot_height=700, background_fill_color="#000000",tools=TOOLS)
-#ngcfov = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source1, size=5, color="#6063FF", alpha=0.5,legend_label='*FOV')
-ngc_memb = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source2, size=5, color="#6063FF",alpha=0.5,legend_label='*6791')
-ngc_vstar = s3.circle('BP_RP_abs','GMAG_abs', source=source3, size=4, color="#FFFF00", alpha=1.0,name='ngc',legend_label='V*6791')
-ngc_vfield = s3.circle('BP_RP_abs','GMAG_abs', source=source4, size=4, color="#00eb00", alpha=1.0,name='field',legend_label='V*FIELD') 
+s3 = figure(plot_width=700, plot_height=700, background_fill_color=cpal[0],tools=TOOLS)
+#ngcfov = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source1, size=5, color=cpal[1], alpha=0.5,legend_label='*FOV')
+ngc_memb = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source2, size=5, color=cpal[1],alpha=0.5,legend_label='*6791')
+ngc_vstar = s3.circle('BP_RP_abs','GMAG_abs', source=source3, size=4, color=cpal[2], alpha=1.0,name='ngc',legend_label='V*6791')
+ngc_vfield = s3.circle('BP_RP_abs','GMAG_abs', source=source4, size=4, color=cpal[3], alpha=1.0,name='field',legend_label='V*FIELD') 
 iso7 = s3.line(BP7-RP7,G7,color='snow',legend_label='ISO '+str(np.round(10**(9.85-9),2)))
 iso8 = s3.line(BP8-RP8,G8,color='snow',legend_label='ISO '+str(np.round(10**(9.905-9),2)))
 iso9 = s3.line(BP9-RP9,G9,color='snow',legend_label='ISO '+str(np.round(10**(9.95-9),2)))
@@ -263,11 +263,11 @@ dvngc_clc = dv[dv.TENTATIVE=='Classical']
 dvngc_2p = dv[dv.TENTATIVE=='2period']
 
 dvngc_2p = dv[dv.TENTATIVE=='2period']
-s4 = figure(plot_width=700, plot_height=700, background_fill_color="#000000",tools=TOOLS)
-#ngcfov = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source1, size=5, color="#6063FF", alpha=0.5,legend_label='*FOV')
-ngc_memb = s4.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source2, size=5, color="#6063FF", alpha=0.5,legend_label='*6791')
-ngc_vstar = s4.circle('BP_RP_abs','GMAG_abs', source=source3, size=4, color="#FFFF00", alpha=1.0,name='ngc',legend_label='V*6791')
-ngc_vfield = s4.circle('BP_RP_abs','GMAG_abs', source=source4, size=4, color="#00eb00", alpha=1.0,name='field',legend_label='V*FIELD') 
+s4 = figure(plot_width=700, plot_height=700, background_fill_color=cpal[0],tools=TOOLS)
+#ngcfov = s3.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source1, size=5, color=cpal[1], alpha=0.5,legend_label='*FOV')
+ngc_memb = s4.circle('bp_rp_abs','phot_g_mean_mag_abs', source=source2, size=5, color=cpal[1], alpha=0.5,legend_label='*6791')
+ngc_vstar = s4.circle('BP_RP_abs','GMAG_abs', source=source3, size=4, color=cpal[2], alpha=1.0,name='ngc',legend_label='V*6791')
+ngc_vfield = s4.circle('BP_RP_abs','GMAG_abs', source=source4, size=4, color=cpal[3], alpha=1.0,name='field',legend_label='V*FIELD') 
 #var_type plot
 ngc_ecb =  
 
