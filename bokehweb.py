@@ -238,7 +238,7 @@ s3.legend.label_text_color = "white"
 s3.xaxis.axis_label = 'BP-RP'
 s3.yaxis.axis_label = 'MG'
 
-tooltips1 = tooltips1 = [('ID','@ID'),('VAR','@TENTATIVE')]
+tooltips1 = tooltips1 = [('ID','@ID'),('VAR','@FINAL_TYPE')]
 s3.add_tools(HoverTool(names=['ngc','field'],tooltips=tooltips1))
 t3 = Title()
 age = 9.95
